@@ -68,19 +68,19 @@ class BoundingBoxWidget(object):
         return self.ims, self.fs, self.cs
 
 if __name__ == '__main__':
-    arr_images = np.genfromtxt('./data_preparation/images/images.csv', delimiter=',')
-    arr_face_annotations = np.genfromtxt('./data_preparation/annotations/is_face.csv', delimiter=',')
-    arr_char_annotations = np.genfromtxt('./data_preparation/annotations/character.csv', delimiter=',')
+    arr_images = np.genfromtxt('./data/data_preparation/images/images_2.csv', delimiter=',')
+    arr_face_annotations = np.genfromtxt('./data/data_preparation/annotations/is_face_2.csv', delimiter=',')
+    arr_char_annotations = np.genfromtxt('./data/data_preparation/annotations/character_2.csv', delimiter=',')
 
     # print(arr_images)
 
     print(len(arr_images))
     print(len(arr_face_annotations))
 
-    outward_images_path = './data_preparation/images/image_files'
+    outward_images_path = './data/data_preparation/images/image_files'
 
-    for i in range(550, 700):
-        path = "./scraped_images/" + str(i) + ".png"
+    for i in range(880, 900):
+        path = "./data/scraped_images/" + str(i) + ".png"
         boundingbox_widget = BoundingBoxWidget(path)
         while True:
             cv2.imshow('image', boundingbox_widget.show_image())
@@ -101,9 +101,9 @@ if __name__ == '__main__':
 
                 # print(arr_images)
 
-                np.savetxt('./data_preparation/images/images.csv', arr_images, delimiter=",")
-                np.savetxt('./data_preparation/annotations/is_face.csv', arr_face_annotations, delimiter=",")
-                np.savetxt('./data_preparation/annotations/character.csv', arr_char_annotations, delimiter=",")
+                np.savetxt('./data/data_preparation/images/images_2.csv', arr_images, delimiter=",")
+                np.savetxt('./data/data_preparation/annotations/is_face_2.csv', arr_face_annotations, delimiter=",")
+                np.savetxt('./data/data_preparation/annotations/character_2.csv', arr_char_annotations, delimiter=",")
 
                 exit(1)
             elif key == ord('n'):
@@ -120,8 +120,8 @@ if __name__ == '__main__':
 
                 # print(arr_images)
 
-                np.savetxt('./data_preparation/images/images.csv', arr_images, delimiter=",")
-                np.savetxt('./data_preparation/annotations/is_face.csv', arr_face_annotations, delimiter=",")
-                np.savetxt('./data_preparation/annotations/character.csv', arr_char_annotations, delimiter=",")
+                np.savetxt('./data/data_preparation/images/images_2.csv', arr_images, delimiter=",")
+                np.savetxt('./data/data_preparation/annotations/is_face_2.csv', arr_face_annotations, delimiter=",")
+                np.savetxt('./data/data_preparation/annotations/character_2.csv', arr_char_annotations, delimiter=",")
 
                 break

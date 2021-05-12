@@ -129,13 +129,7 @@ dmypy.json
 .pyre/
 
 # folders
-character-face-dectection/generated_images
-character-face-dectection/scraped_images
-character-face-dectection/test_bw
-character-face-dectection/faces
-character-face-dectection/cnn_saved_models
-character-face-dectection/data_preparation
-character-face-dectection/cascades
+character-face-dectection/data
 
 # idea
 .idea/
