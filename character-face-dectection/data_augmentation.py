@@ -40,7 +40,7 @@ for i in range(0, len(arr_images)):
         arr_labels_test = np.append(arr_labels_test, [label])
         j += 1
         print("\tbatch", j)
-        if j > 2:
+        if j > 0:
             break
 
 # print(arr_images_test.shape)
