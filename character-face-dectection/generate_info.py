@@ -3,14 +3,17 @@ import os
 
 import cv2
 
-f = open("../../opencv_workspace/3000_positives/bg.txt", "w+")
+f = open("../../opencv_workspace/dilbert/bg.txt", "w+")
+# f = open("../../opencv_workspace/dilbert/pos/info.lst", "w+")
 
-os.chdir('../../opencv_workspace/3000_positives/negs')
-for file in glob.glob("*.jpeg"):
-    path = '../../opencv_workspace/3000_positives/negs/' + file
+os.chdir('../../opencv_workspace/dilbert/negs')
+for file in glob.glob("*.png"):
+    path = '../../opencv_workspace/dilbert/negs/' + file
     img = cv2.imread(path)
     line = "negs/" + file + "\n"
     f.write(line)
+    # line = file + " 1 0 0 50 50\n"
+    # f.write(line)
 
 
 # for i in range(0, 100):

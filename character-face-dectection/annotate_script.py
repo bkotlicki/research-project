@@ -4,6 +4,10 @@ import json
 import sys
 import numpy as np
 
+import glob
+import random
+from PIL import Image
+
 
 def click(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -15,20 +19,21 @@ def click(event, x, y, flags, param):
 
 if __name__ == '__main__':
     left_bound = 600
-    right_bound = 1000
+    right_bound = 800
 
     refPt = []
 
-    faces_folder_path = "./faces"
-    json_annotation_file = "./faces/annotations.json"
+    faces_folder_path = './data/dilbert_faces/images'
+    json_annotation_file = './data/dilbert_faces/annotations.json'
 
     array = []
 
     counter = 0
 
     for i in range(left_bound, right_bound + 1):
-        path = "./scraped_images/" + str(i) + ".png"
-        img = cv2.imread(path)
+        # path = "./scraped_images/" + str(i) + ".png"
+        image_path = random.choice(glob.glob('./data/scraped_images_dilbert/*.png'))
+        img = cv2.imread(image_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         refPt = []

@@ -26,6 +26,11 @@ total_ground_truths = 0
 
 threshold = 0.0
 
+minY = 1.0
+maxY = 0.0
+minX = 1.0
+maxX = 0.0
+
 precisions = []
 recalls = []
 annotations = []
@@ -38,7 +43,7 @@ while threshold <= 1.0:
         total_ground_truths = total_ground_truths + len(bounding_boxes)
 
         # if os.path.exists(image_path):
-        cascade_path = '../data/cascades/cascade_900_positives.xml'
+        cascade_path = '../data/cascades/cascade.xml'
         face_cascade = cv2.CascadeClassifier(cascade_path)
 
         face_predictor = tf.keras.models.load_model('../data/cnn_saved_models/face_32_64_128_25k')
@@ -111,6 +116,15 @@ while threshold <= 1.0:
 
     annotation = threshold
 
+    if precision < minX:
+        minX = precision
+    if precision > maxX:
+        maxX = precision
+    if recall < minY:
+        minY = recall
+    if recall > maxY:
+        maxY = recall
+
     precisions.append(precision)
     recalls.append(recall)
 
@@ -120,13 +134,13 @@ while threshold <= 1.0:
 
     threshold += 0.1
 
-plt.ylim(0.55, 0.65)
-plt.xlim(0.675, 0.775)
+plt.ylim(minY - 0.05, maxY + 0.05)
+plt.xlim(minX - 0.05, maxX + 0.05)
 
 plt.title("Precision vs Recall - different CNN thresholds")
 
-plt.xlabel(precision)
-plt.ylabel(recall)
+plt.xlabel("precision")
+plt.ylabel("recall")
 
 plt.scatter(precisions, recalls)
 
