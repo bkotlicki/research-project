@@ -52,59 +52,111 @@ class BoundingBoxWidget(object):
     def return_bounding_boxes(self):
         return self.bounding_boxes
 
-if __name__ == '__main__':
 
-    # here define the filepath to dilbert images in your file directory
-    imgs_path = '../data/scraped_images_dilbert/*'
-    out_file_path = '../data/annotations.json'
-    paths = glob.glob(imgs_path)
-    paths = sorted(paths)
-    # here define how many images you want to annotate
-    selected = paths[0:2]
+def manually_annotate_character_colour_bbox(paths, out_file_path):
+    """
+    Method to manually annotate characters, bounding boxes for characters and background colour.
+    How to annotate:
+        1. Mark bounding boxes of characters, left to right
+        2. Press 'n' to move onto text annotation
+        3. Input character numbers as they appear left to right in the comic, separated by a space
+        4. Put a comma in between the characters and the background colour,
+            input background colour as abbreviated letter (see printed options)
+    N.B. Order is important, annotate left to right for bounding boxes and characters.
+        If there is no character, don't input a bounding box.
+    :param paths:
+    :param out_file_path:
+    :return:
+    """
 
-    result = {}
+    stop_exec = False
 
-    for i, path in enumerate(selected):
-        if os.path.exists(path):
-            bounding_box_widget = BoundingBoxWidget(path)
-            while True:
-                cv2.imshow('image', bounding_box_widget.show_image())
-                key = cv2.waitKey(1)
+    for i, img_path in enumerate(paths):
+        if stop_exec:
+            break
 
-                # after annotating bounding boxes, click 'n' to do character and color annotation
-                # you can also continue without annotating bounding boxes if no characters present
-                if key == ord('n'):
+        bounding_box_widget = BoundingBoxWidget(img_path)
+        while True:
+            cv2.imshow('image', bounding_box_widget.show_image())
+            key = cv2.waitKey(1)
 
-                    print("Available characters:\n"
-                          "1: Dilbert\n"
-                          "2: Dogbert\n"
-                          "3: Boss")
+            # after annotating bounding boxes, click 'n' to do character and color annotation
+            # you can also continue without annotating bounding boxes if no characters present
+            if key == ord('q'):
+                with open(out_file_path, "w+") as out_file:
+                    json.dump(result, out_file)
 
-                    # what to do about non-recurring characters?
-                    # building as character
-                    print("Availble background colours:\n"
-                          "yellow: y\n"
-                          "green: g:\n"
-                          "purple: p\n"
-                          "blue: b\n"
-                          "pink: pi\n"
-                          "white:")
-                    # brown??
+                stop_exec = True
 
-                    char_and_colour = input(f"{i + 1}/{len(paths)}: character character etc., background_colour: ")
+                break
+            if key == ord('n'):
+                print("Available characters:\n"
+                      "Dilbert: 1\n"
+                      "Dogbert: 2\n"
+                      "Boss: 3\n"
+                      "CEO: 4\n"
+                      "Wolly: 5\n"
+                      "Alice: 6\n"
+                      "Catbert: 7\n"
+                      "Asok: 8\n"
+                      "Non-recurring/main Character: 9\n"
+                      "Building: 0")
 
-                    cc_list = char_and_colour.split(",")
-                    chars = cc_list[0].split(" ")
-                    colour = cc_list[1]
+                # what to do about non-recurring characters?
+                # building as character
+                print("Availble background colours:\n"
+                      "yellow: y\n"
+                      "green: g:\n"
+                      "purple: p\n"
+                      "blue: b\n"
+                      "pink: pi\n"
+                      "white: w")
+                # brown??
 
-                    filename = os.path.basename(path)
+                char_and_colour = input(f"{i + 1}/{len(paths)}: character character etc., background_colour: ")
 
-                    result[filename] = {"Characters": chars, "Colour": colour, "Bounding boxes": bounding_box_widget.return_bounding_boxes()}
+                cc_list = char_and_colour.split(",")
+                chars = cc_list[0].split(" ")
+                colour = cc_list[1]
 
-                    cv2.destroyAllWindows()
-                    break
+                filename = os.path.basename(img_path)
+
+                # json will have only filename as key instead of filepath as Ben had previously
+                result[filename] = {"Characters": chars, "Colour": colour,
+                                    "Bounding boxes": bounding_box_widget.return_bounding_boxes()}
+
+                with open(out_file_path, "w+") as out_file:
+                    json.dump(result, out_file)
+
+                cv2.destroyAllWindows()
+                break
 
     with open(out_file_path, "w+") as out_file:
         json.dump(result, out_file)
 
     exit(1)
+
+
+if __name__ == '__main__':
+    # here define the filepath to dilbert images in your file directory
+    imgs_path = '../data/resized/*'
+    out_file_path = '../data/annotations.json'
+
+    paths = glob.glob(imgs_path)
+    paths = sorted(paths)
+
+    result = {}
+
+    images = []
+    characters = []
+
+    with open(out_file_path) as out_file:
+        result = json.load(out_file)
+
+    # here define how many images you want to annotate
+    # ben selected = paths[0:750]
+    # darwin selected = paths[750:1500]
+    # bartek selected = paths[1500:2250}
+    selected = paths[1527+237+66+40+102+50+113+41+68:2250]
+
+    manually_annotate_character_colour_bbox(selected, out_file_path)

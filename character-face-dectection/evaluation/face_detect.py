@@ -11,7 +11,6 @@ import tensorflow as tf
 
 from iou import IntersectionOverUnion
 
-cascade_path = '../data/cascades/cascade.xml'
 outwards_path = '../data/generated_images/test_bounding_box'
 
 json_file_path = '../data/evaluation/bounding_boxes.json'
@@ -19,10 +18,6 @@ bounding_box_data = {}
 
 with open(json_file_path) as f:
     bounding_box_data = json.load(f)
-
-total_true_positives = 0
-total_false_positives = 0
-total_ground_truths = 0
 
 threshold = 0.0
 
@@ -34,19 +29,22 @@ maxX = 0.0
 precisions = []
 recalls = []
 annotations = []
+f1_scores = []
+
+cascade_path = '../data/cascades/cascade_900_positives.xml'
+face_cascade = cv2.CascadeClassifier(cascade_path)
+face_predictor = tf.keras.models.load_model('../data/cnn_saved_models/face_32_64_128_5k_1.3k')
 
 while threshold <= 1.0:
+    total_true_positives = 0
+    total_false_positives = 0
+    total_ground_truths = 0
+
     for comic_id in bounding_box_data.keys():
         image_path = '../data/scraped_images/' + str(comic_id) + '.png'
         bounding_boxes = bounding_box_data[comic_id]
 
         total_ground_truths = total_ground_truths + len(bounding_boxes)
-
-        # if os.path.exists(image_path):
-        cascade_path = '../data/cascades/cascade.xml'
-        face_cascade = cv2.CascadeClassifier(cascade_path)
-
-        face_predictor = tf.keras.models.load_model('../data/cnn_saved_models/face_32_64_128_25k')
 
         image = cv2.imread(image_path)
         haar_image = cv2.imread(image_path)
@@ -84,7 +82,7 @@ while threshold <= 1.0:
                         min_dist = dist
                         min_box = box
 
-                print("closest box = ", min_box)
+                # print("closest box = ", min_box)
                 i = IntersectionOverUnion(min_box, [x, y, w, h])
 
                 cv2.putText(image, str(round(i.result(), 3)),
@@ -104,7 +102,7 @@ while threshold <= 1.0:
                     # true positive found
                     total_true_positives = total_true_positives + 1
 
-                print("Intersection over union = ", i.result())
+                # print("Intersection over union = ", i.result())
 
         # new_filename = str(comic_id) + "_result.png"
         # # cv2.imwrite(os.path.join(outwards_path, new_filename), image)
@@ -113,6 +111,10 @@ while threshold <= 1.0:
 
     precision = total_true_positives / (total_true_positives + total_false_positives)
     recall = total_true_positives / total_ground_truths
+
+    f1_score = 2 * (precision * recall) / (precision + recall)
+
+    f1_score = round(f1_score, 2)
 
     annotation = threshold
 
@@ -125,8 +127,15 @@ while threshold <= 1.0:
     if recall > maxY:
         maxY = recall
 
+    print("threshold: ", threshold)
+    print("precision: ", precision)
+    print("recall: ", recall)
+    print("f1 score: ", f1_score)
+    print("\n")
+
     precisions.append(precision)
     recalls.append(recall)
+    f1_scores.append(f1_score)
 
     annotation = round(annotation, 1)
 
@@ -134,26 +143,29 @@ while threshold <= 1.0:
 
     threshold += 0.1
 
-plt.ylim(minY - 0.05, maxY + 0.05)
-plt.xlim(minX - 0.05, maxX + 0.05)
+# plt.ylim(minY - 0.05, maxY + 0.05)
+# plt.xlim(minX - 0.05, maxX + 0.05)
+#
+# plt.title("Precision vs Recall - different CNN thresholds")
+#
+# plt.xlabel("precision")
+# plt.ylabel("recall")
+#
+# print(f1_scores)
+#
+# plt.scatter(precisions, recalls)
+#
+# plt.grid()
+#
+# for i, txt in enumerate(annotations):
+#     plt.annotate(txt, (precisions[i], recalls[i]))
+#
+# plt.show()
 
-plt.title("Precision vs Recall - different CNN thresholds")
 
-plt.xlabel("precision")
-plt.ylabel("recall")
-
-plt.scatter(precisions, recalls)
-
-plt.grid()
-
-for i, txt in enumerate(annotations):
-    plt.annotate(txt, (precisions[i], recalls[i]))
-
-plt.show()
-
-
-# print("precision = ", precision)
-# print("recall = ", recall)
+print(precisions)
+print(recalls)
+print(f1_scores)
 
 
 # for i in range (500, 600):
