@@ -45,11 +45,11 @@ for comic_id in bounding_box_data.keys():
     image_path = '../data/scraped_images/' + str(comic_id) + '.png'
     # load the image and define the window width and height
     image = cv2.imread(image_path)
-    (winW, winH) = (50, 50)
+    (winW, winH) = (30, 30)
 
     for resized in pyramid(image, scale=1.5):
         # loop over the sliding window for each layer of the pyramid
-        for (x, y, window) in sliding_window(resized, stepSize=32, windowSize=(winW, winH)):
+        for (x, y, window) in sliding_window(resized, stepSize=16, windowSize=(winW, winH)):
             # if the window does not meet our desired window size, ignore it
             if window.shape[0] != winH or window.shape[1] != winW:
                 continue
@@ -70,8 +70,8 @@ for comic_id in bounding_box_data.keys():
 
             if is_face > 0.9:
                 print("face")
-                cv2.imshow("Window", image[y:y + winH, x:x + winW])
-                cv2.waitKey(0)
+                # cv2.imshow("Window", image[y:y + winH, x:x + winW])
+                # cv2.waitKey(0)
             else:
                 cv2.imshow("Window", clone)
                 cv2.waitKey(1)

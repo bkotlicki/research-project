@@ -1,12 +1,16 @@
 import tensorflow as tf
 from tensorflow.keras import datasets, layers, models
 import numpy as np
+import time
 
 # (a, b), (c, d) = datasets.cifar10.load_data()
 # (train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
 # train_images, test_images = train_images / 255.0, test_images / 255.0
 
 # print(train_images[0])
+
+# data_images = np.genfromtxt('drive/MyDrive/RP/images_dilbert_3.csv', delimiter=',')
+# data_labels = np.genfromtxt('drive/MyDrive/RP/faces_dilbert_3.csv', delimiter=',')
 
 data_images = np.genfromtxt('drive/MyDrive/RP/images_dilbert_3.csv', delimiter=',')
 data_labels = np.genfromtxt('drive/MyDrive/RP/faces_dilbert_3.csv', delimiter=',')
@@ -66,4 +70,4 @@ test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
 print(test_acc)
 
-model.save('saved_model/my_model')
+# model.save('saved_model/my_model')
