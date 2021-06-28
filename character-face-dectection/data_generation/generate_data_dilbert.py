@@ -65,34 +65,10 @@ class BoundingBoxWidget(object):
         return self.ims, self.fs
 
 if __name__ == '__main__':
-    arr_images = np.genfromtxt('./data/data_preparation/images/images_dilbert_3.csv', delimiter=',')
-    arr_faces = np.genfromtxt('./data/data_preparation/annotations/faces_dilbert_3.csv', delimiter=',')
+    arr_images = np.genfromtxt('../data/data_preparation/images/images_dilbert_3.csv', delimiter=',')
+    arr_faces = np.genfromtxt('../data/data_preparation/annotations/faces_dilbert_3.csv', delimiter=',')
 
-    # arr_images = np.array([])
-    # arr_faces = np.array([])
-    # #
-    #
     arr_images_test = arr_images.reshape(arr_images.shape[0] // 7500, 50, 50, 3)
-    print(len(arr_images_test))
-    # #
-    # x = arr_images_test[3].astype(int)
-    # x = x.astype(np.uint8)
-
-    # cv2.imshow("", x)
-    # cv2.waitKey(0)
-    #
-    # path = random.choice(glob.glob('./data/scraped_images_dilbert/*.png'))
-    # img = cv2.imread(path)
-    # img = cv2.resize(img, (50, 50))
-    # img = np.reshape(img, (50, -1))
-    # img = np.reshape(img, (-1))
-    #
-    # arr_images = []
-    # arr_faces = []
-    #
-    # arr_images = [img, img]
-    #
-    # np.savetxt('./data/data_preparation/images/images_dilbert.csv', arr_images, delimiter=",")
 
     run_program = True
     while run_program:

@@ -23,8 +23,8 @@ if __name__ == '__main__':
 
     refPt = []
 
-    faces_folder_path = './data/dilbert_faces/images'
-    json_annotation_file = './data/dilbert_faces/annotations.json'
+    faces_folder_path = '../data/dilbert_faces/images'
+    json_annotation_file = '../data/dilbert_faces/annotations.json'
 
     array = []
 
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     for i in range(left_bound, right_bound + 1):
         # path = "./scraped_images/" + str(i) + ".png"
-        image_path = random.choice(glob.glob('./data/scraped_images_dilbert/*.png'))
+        image_path = random.choice(glob.glob('../data/scraped_images_dilbert/*.png'))
         img = cv2.imread(image_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 

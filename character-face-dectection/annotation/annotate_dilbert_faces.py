@@ -65,8 +65,8 @@ class BoundingBoxWidget(object):
 
 if __name__ == '__main__':
 
-    faces_folder_path = './data/dilbert_faces/non-faces'
-    json_annotation_file = './data/dilbert_faces/annotations.json'
+    faces_folder_path = '../data/dilbert_faces/non-faces'
+    json_annotation_file = '../data/dilbert_faces/annotations.json'
 
     counter = 9
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
                         counter = counter + 1
                         cv2.imwrite(os.path.join(faces_folder_path, filename), i)
 
-                    path = random.choice(glob.glob('./data/scraped_images_dilbert/*.png'))
+                    path = random.choice(glob.glob('../data/scraped_images_dilbert/*.png'))
 
                     cv2.destroyAllWindows()
                     break

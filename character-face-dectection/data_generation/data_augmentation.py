@@ -9,18 +9,13 @@ datagen = ImageDataGenerator(
     horizontal_flip=True,
     brightness_range=(0.9, 1.1))
 # Loading a sample image
-arr_images = np.genfromtxt('./data/data_preparation/images/images_dilbert_2.csv', delimiter=',')
-arr_labels = np.genfromtxt('./data/data_preparation/annotations/faces_dilbert_2.csv', delimiter=',')
+arr_images = np.genfromtxt('../data/data_preparation/images/images_dilbert_2.csv', delimiter=',')
+arr_labels = np.genfromtxt('../data/data_preparation/annotations/faces_dilbert_2.csv', delimiter=',')
 arr_images = arr_images.reshape(arr_images.shape[0] // 7500, 50, 50, 3)
 # # Reshaping the input image
 
 arr_images_test = np.copy(arr_images)
 arr_labels_test = np.copy(arr_labels)
-
-print(len(arr_images))
-print(len(arr_labels))
-
-print(arr_images.shape)
 
 for i in range(0, len(arr_images)):
     print("running image ", i)
@@ -42,18 +37,6 @@ for i in range(0, len(arr_images)):
         print("\tbatch", j)
         if j > 0:
             break
-
-# print(arr_images_test.shape)
-
-# arr_images_test = np.reshape(arr_images_test, (arr_images_test.shape[0] // 7500, 50, 50, 3))
-
-# x = arr_images_test[326].astype(int)
-# x = x.astype(np.uint8)
-#
-# cv2.imshow("", x)
-# cv2.waitKey(0)
-
-# print(arr_images_test.shape)
 
 np.savetxt('./data/data_preparation/images/images_dilbert_3.csv', arr_images_test, delimiter=",")
 np.savetxt('./data/data_preparation/annotations/faces_dilbert_3.csv', arr_labels_test, delimiter=",")

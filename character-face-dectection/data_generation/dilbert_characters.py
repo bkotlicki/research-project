@@ -2,7 +2,7 @@ import cv2
 import json
 import numpy as np
 
-path_one = './data/annotations.json'
+path_one = '../data/annotations.json'
 
 json_dict = {}
 
@@ -27,9 +27,6 @@ for k in json_dict:
         for i in range(0, len(cs)):
             bb = bbs[i]
             face = img[bb[1]:bb[1]+bb[3], bb[0]:bb[0]+bb[2]]
-            # print(cs[i])
-            # cv2.imshow("", face)
-            # cv2.waitKey(0)
             face = cv2.resize(face, (50, 50))
             face = np.reshape(face, (50, -1))
             face = np.reshape(face, (-1))
@@ -40,5 +37,5 @@ for k in json_dict:
 print(images.shape)
 print(characters.shape)
 
-np.savetxt('./data/data_preparation/images/images_of_characters.csv', images, delimiter=",")
-np.savetxt('./data/data_preparation/annotations/annotations_of_characters.csv', characters, delimiter=",")
+np.savetxt('../data/data_preparation/images/images_of_characters.csv', images, delimiter=",")
+np.savetxt('../data/data_preparation/annotations/annotations_of_characters.csv', characters, delimiter=",")
